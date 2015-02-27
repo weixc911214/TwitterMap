@@ -16,5 +16,5 @@ api = tweepy.API(auth)
 public_tweets = api.search("columbia")
 for tweet in public_tweets:
     if tweet.geo is not None:
-        print tweet.text
+        print tweet.text.encode("utf8")
         print tweet.geo
