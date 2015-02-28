@@ -4,23 +4,46 @@ import json
 import MySQLdb as sql
 import MySQLdb.cursors
 class Stream_Listener(tweepy.StreamListener):
-
+from  website import message
     def on_status(self, status):
-        if status.geo is not None:
-            tweet_id = status.id
-            text = status.text.encode('latin-1', 'ignore')
-            geo = str(status.geo)
-            author_name = status.author.name
-            author_id = status.author.id
-            author_url = status.author.profile_image_url_https
-            date = status.created_at
-            db = sql.connect(host='cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com', user='weixc1234', passwd='wxc16888', db='innodb', cursorclass=MySQLdb.cursors.DictCursor)
-            cursor = db.cursor()
-            test_sql ="""INSERT INTO innodb.TwitterMap(id, text, geo, author_name, author_id, author_url, date) VALUES(\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\")""" % (str(tweet_id), text, geo, author_name, str(author_id), author_url, date)
-            cursor.execute(test_sql)
-            db.commit()
-            db.close()
-            print test_sql
+        msg = message.MessageServer()
+
+        # tweet_id = status.id
+        #
+        # if status.geo is None:
+        #     return
+        #
+        # #print "hello"
+        # try:
+        #     text = status.text.encode("utf8")
+        # except:
+        #     return
+        #
+        # location = str(status.geo["coordinates"][0]) + "," + str(status.geo["coordinates"][1])
+        #
+        #
+        #     #print "aaa"
+        # #print geo
+        # #print type(text)
+        # author_name = status.author.name
+        # author_id = status.author.id
+        # author_url = status.author.profile_image_url_https
+        # date = status.created_at
+        # try:
+        #     db = sql.connect(host='cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com', user='weixc1234', passwd='wxc16888', db='innodb', cursorclass=MySQLdb.cursors.DictCursor)
+        #     cursor = db.cursor()
+        #     #print geo
+        #     test_sql ="""INSERT INTO innodb.TwitterMap(id, text, geo, author_name, author_id, author_url, date) VALUES(\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\")""" % (str(tweet_id), text, location, author_name, str(author_id), author_url, date)
+        #     #print test_sql
+        #     cursor.execute(test_sql)
+        #     db.commit()
+        #     db.close()
+        #     print "success"
+        #     #print test_sql
+        # except:
+        #     pass
+
+
 
     def on_error(self, status_code):
         if status_code == 420:
@@ -43,5 +66,5 @@ sl = Stream_Listener()
 
 myStream = tweepy.Stream(auth=api.auth, listener=Stream_Listener())
 
-myStream.filter(track=['new york'])
+myStream.filter(track=['Nike'])
 
