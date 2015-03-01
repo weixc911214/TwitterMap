@@ -15,6 +15,7 @@
     <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
     <link href="../static/js/starter-template.css" rel="stylesheet">
+      <script src="../static/js/heatmap.js"></script>
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -28,7 +29,7 @@
           <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
 
-
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
 
@@ -36,67 +37,71 @@
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+
     <meta charset="utf-8">
     <style>
+
+
+
       html, body, #map-canvas {
         height: 89%;
         margin: 0px;
+        color:#fff;
         padding: 0px
       }
     </style>
 
+    <style>
 
-
+      #panel {
+        position: absolute;
+        top: 5px;
+        left: 50%;
+        margin-left: -180px;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true&libraries=visualization"></script>
   <script type="text/javascript" charset="utf-8">
+  var map, pointArray, heatmap;
 
-  var map
 
-  function initialize() {
-  var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
+var taxiData = [
+  {% for result in data %}
+  
+  new google.maps.LatLng({{ result.geo }}),
+  {% endfor %}
+  new google.maps.LatLng(37.751266, -122.403355)
+];
+function initialize() {
+
+
+
   var mapOptions = {
-    zoom: 4,
-      center: myLatlng
-      };
+    zoom: 13,
+    center: new google.maps.LatLng(37.774546, -122.433523),
+    mapTypeId: google.maps.MapTypeId.SATELLITE
+  };
 
-  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
 
+  pointArray = new google.maps.MVCArray(taxiData);
 
-    {% for result in data %}
-      var contentString_{{ result.id }} = "{{ result.text }}";
-      var infowindow_{{ result.id }} = new google.maps.InfoWindow({
-          content: contentString_{{ result.id }}
-          });
+  heatmap = new google.maps.visualization.HeatmapLayer({
+    data: pointArray
+  });
 
-      var lng = new google.maps.LatLng({{ result.geo }})
+  heatmap.setMap(map);
+}
 
-      var marker_{{ result.id }} = new google.maps.Marker({
-          position: lng,
-          map: map,
-          title: 'Uluru (Ayers Rock)'
-      });
+function toggleHeatmap() {
+  heatmap.setMap(heatmap.getMap() ? null : map);
+}
 
-      google.maps.event.addListener(marker_{{ result.id }}, 'click', function() {
-        infowindow_{{ result.id }}.open(map,marker_{{ result.id }});
-        });
-    {% endfor %}
-
-
-  }
-
-  var pinColor = "FE7569";
-  var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
-        new google.maps.Size(21, 34),
-        new google.maps.Point(0,0),
-        new google.maps.Point(10, 34));
-  var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
-        new google.maps.Size(40, 37),
-        new google.maps.Point(0, 0),
-        new google.maps.Point(12, 35));
-    google.maps.event.addDomListener(window, 'load', initialize);
-
-    function createMarker(text, geo) {
-
-    }
     function update(){
         namespace = '/test'; // change to an empty string to use the global namespace
             // the socket.io documentation recommends sending an explicit package upon connection
@@ -107,36 +112,50 @@
             });
             // event handler for server sent data
             // the data is displayed in the "Received" section of the page
-            socket.on('my event', function(msg) {
+        socket.on('my event', function(msg) {
                 $('#log').append('<br>Received New Tweet: ');
                 $('#log').append('<br>Text: ' + msg.data.text);
                 $('#log').append('<br>Lat: ' + msg.data.geo.lat);
                 $('#log').append('<br>Lng: ' + msg.data.geo.lng);
+        pointArray.push(new google.maps.LatLng(msg.data.geo.lat, msg.data.geo.lng));
 
-            var contentString = msg.data.text;
+        });
+    }
 
-            var infowindow = new google.maps.InfoWindow({
-              content: contentString
-              });
+$(document).ready(update());
 
-            var lng = new google.maps.LatLng(msg.data.geo.lat, msg.data.geo.lng)
+function changeGradient() {
+  var gradient = [
+    'rgba(0, 255, 255, 0)',
+    'rgba(0, 255, 255, 1)',
+    'rgba(0, 191, 255, 1)',
+    'rgba(0, 127, 255, 1)',
+    'rgba(0, 63, 255, 1)',
+    'rgba(0, 0, 255, 1)',
+    'rgba(0, 0, 223, 1)',
+    'rgba(0, 0, 191, 1)',
+    'rgba(0, 0, 159, 1)',
+    'rgba(0, 0, 127, 1)',
+    'rgba(63, 0, 91, 1)',
+    'rgba(127, 0, 63, 1)',
+    'rgba(191, 0, 31, 1)',
+    'rgba(255, 0, 0, 1)'
+  ]
+  heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+}
 
-            var marker = new google.maps.Marker({
-                position: lng,
-                map: map,
-                icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
-                shadow: pinShadow,
-                title: 'Uluru (Ayers Rock)'
-          });
+function changeRadius() {
+  heatmap.set('radius', heatmap.get('radius') ? null : 20);
+}
 
-          google.maps.event.addListener(marker, 'click', function() {
-            infowindow.open(map,marker);
-            });
+function changeOpacity() {
+  heatmap.set('opacity', heatmap.get('opacity') ? null : 0.2);
+}
 
-          });
-        }
+google.maps.event.addDomListener(window, 'load', initialize);
 
-        $(document).ready(update());
+
+
     </script>
 
 
@@ -165,7 +184,17 @@
       </div>
     </nav>
     
-    {% block body %}{% endblock %}
+    <div id="panel">
+      <button onclick="toggleHeatmap()">Toggle Heatmap</button>
+      <button onclick="changeGradient()">Change gradient</button>
+      <button onclick="changeRadius()">Change radius</button>
+      <button onclick="changeOpacity()">Change opacity</button>
+    </div>
+    <div id="map-canvas"></div>
+    <h1>Realtime Map</h1>
+
+    <h2>Receive:</h2>
+    <div id="log"></div>
 
 
     <!-- Bootstrap core JavaScript

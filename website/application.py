@@ -109,37 +109,13 @@ class Stream_Listener(tweepy.StreamListener):
 
 
 
-class TweetsNamespace(BaseNamespace):
-
-    sockets = {}
-
-    def recv_connect(self):
-        print "Got a socket connection" # debug
-        self.sockets[id(self)] = self
-
-    def disconnect(self, *args, **kwargs):
-        print "Got a socket disconnection" # debug
-        if id(self) in self.sockets:
-            del self.sockets[id(self)]
-
-        super(TweetsNamespace, self).disconnect(*args, **kwargs)
-    # broadcast to all sockets on this channel!
-
-    @classmethod
-    def broadcast(self, event, message):
-        for ws in self.sockets.values():
-            print "hello ws"
-            ws.emit(event, message)
-
-
-
 
 @application.route("/")
 def index():
     engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/innodb', convert_unicode=True)
     metadata = MetaData(bind=engine)
     tweets = Table('TwitterMap', metadata, autoload = True)
-    result = tweets.select(tweets.c.text.like("%Starbucks%")).execute().fetchall()
+    result = tweets.select(tweets.c.text.like("%Columbia%")).execute().fetchall()
 
     return render_template("index.html", data = result)
 
@@ -152,7 +128,7 @@ def message():
     engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/innodb', convert_unicode=True)
     metadata = MetaData(bind=engine)
     tweets = Table('TwitterMap', metadata, autoload = True)
-    result = tweets.select(tweets.c.text.like("%Starbucks%")).execute().fetchall()
+    result = tweets.select(tweets.c.text.like("%Columbia%")).execute().fetchall()
 
     # for r in result:
     #     print type(r["text"])
@@ -164,29 +140,24 @@ def message():
 def test_message(message):
     print message
     global socketio
-    print message
+    #print message
     # emit('my event', {'data': message})
     sl = Stream_Listener()
 
     stream = tweepy.Stream(auth=api.auth, listener=Stream_Listener())
 
-    stream.filter(track=['Starbucks'])
+    stream.filter(track=['a'])
     #print "success"
 
 
-#Listening to web socket
-# @app.route('/socket.io/')
-# def push_stream(rest):
-#     try:
-#         socketio_manage(request.environ, {'/message': TweetsNamespace}, request)
-#         return ''
-#     except:
-#         app.logger.error("Exception while handling socketio connection", exc_info=True)
-#
-# def ping_thread():
-#
-#     global stream
-#     global sl
+@application.route("/heatmap.html")
+def heatmap():
+    engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/innodb', convert_unicode=True)
+    metadata = MetaData(bind=engine)
+    tweets = Table('TwitterMap', metadata, autoload = True)
+    result = tweets.select(tweets.c.text.like("%Columbia%")).execute().fetchall()
+
+    return render_template("heatmap.html", data = result)
 
 
 
