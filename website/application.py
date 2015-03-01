@@ -3,7 +3,7 @@ __author__ = 'wei'
 from socketio import socketio_manage
 import gevent.monkey
 gevent.monkey.patch_all()
-import pymysql as sql
+import MySQLdb as sql
 from socketio.namespace import BaseNamespace
 from flask import Flask, render_template
 from sqlalchemy import create_engine, MetaData, Table
@@ -14,10 +14,10 @@ thread = None
 
 
 
-app = Flask(__name__)
-app.config["DEBUG"] = True
-app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app)
+application = Flask(__name__)
+application.config["DEBUG"] = True
+application.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(application)
 from threading import Thread, Event
 
 session = dict()
@@ -79,15 +79,14 @@ class Stream_Listener(tweepy.StreamListener):
         location = str(status.geo["coordinates"][0]) + "," + str(status.geo["coordinates"][1])
 
 
-            #print "aaa"
-        #print geo
-        #print type(text)
+        tweet_id = status.id
         author_name = status.author.name
         author_id = status.author.id
         author_url = status.author.profile_image_url_https
         date = status.created_at
         try:
-            db = sql.connect(host='cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com', user='weixc1234', passwd='wxc16888', db='innodb', cursorclass=MySQLdb.cursors.DictCursor)
+            
+            db = sql.connect(host='cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com', user='weixc1234', passwd='wxc16888', db='innodb', cursorclass=sql.cursors.DictCursor)
             cursor = db.cursor()
             #print geo
             test_sql ="""INSERT INTO innodb.TwitterMap(id, text, geo, author_name, author_id, author_url, date) VALUES(\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\")""" % (str(tweet_id), text, location, author_name, str(author_id), author_url, date)
@@ -135,7 +134,7 @@ class TweetsNamespace(BaseNamespace):
 
 
 
-@app.route("/")
+@application.route("/")
 def index():
     engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/innodb', convert_unicode=True)
     metadata = MetaData(bind=engine)
@@ -148,7 +147,7 @@ def index():
     #     print type(r["text"])
 
 
-@app.route('/message.html')
+@application.route('/message.html')
 def message():
     engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/innodb', convert_unicode=True)
     metadata = MetaData(bind=engine)
@@ -195,7 +194,7 @@ if __name__ == "__main__":
     # t = threading.Thread(target=ping_thread)
     # t.daemon = True
     # t.start()
-    socketio.run(app)
+    socketio.run(application)
     # SocketIOServer(('', 5000), app, resource="socket.io").serve_forever()
 
 
