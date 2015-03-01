@@ -1,5 +1,5 @@
 tweepy==3.2.0
-pymysql==0.6.2
+MySQLdb==1.2.2
 gevent==1.0.1
 socketio==0.3.5
 Flask==0.10.1

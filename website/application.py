@@ -85,7 +85,7 @@ class Stream_Listener(tweepy.StreamListener):
         author_url = status.author.profile_image_url_https
         date = status.created_at
         try:
-            
+
             db = sql.connect(host='cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com', user='weixc1234', passwd='wxc16888', db='innodb', cursorclass=sql.cursors.DictCursor)
             cursor = db.cursor()
             #print geo
