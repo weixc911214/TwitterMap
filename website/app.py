@@ -141,8 +141,21 @@ class TweetsNamespace(BaseNamespace):
 
 
 
-@app.route("/message/")
+@app.route("/")
 def index():
+    engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/innodb', convert_unicode=True)
+    metadata = MetaData(bind=engine)
+    tweets = Table('TwitterMap', metadata, autoload = True)
+    result = tweets.select(tweets.c.text.like("%Starbucks%")).execute().fetchall()
+
+    return render_template("index.html", data = result)
+
+    # for r in result:
+    #     print type(r["text"])
+
+
+@app.route('/message.html')
+def message():
     engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/innodb', convert_unicode=True)
     metadata = MetaData(bind=engine)
     tweets = Table('TwitterMap', metadata, autoload = True)
@@ -152,12 +165,6 @@ def index():
     #     print type(r["text"])
 
     return render_template("message.html", data = result)
-
-@app.route('/message/')
-def message():
-
-
-    return render_template('message.html')
 
 
 @socketio.on('my event', namespace='/test')
