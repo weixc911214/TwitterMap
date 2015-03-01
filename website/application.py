@@ -3,21 +3,15 @@ __author__ = 'wei'
 from socketio import socketio_manage
 import gevent.monkey
 gevent.monkey.patch_all()
-import json
 import pymysql as sql
 from socketio.namespace import BaseNamespace
-from flask import Flask, jsonify, render_template, request, abort
+from flask import Flask, render_template
 from sqlalchemy import create_engine, MetaData, Table
-from random import random
-from time import sleep
-from socketio.server import SocketIOServer
-import threading
 import time
 import tweepy
-from flask_socketio import SocketIO, emit,send
-import pika
+from flask_socketio import SocketIO, emit
 thread = None
-from flask import copy_current_request_context
+
 
 
 app = Flask(__name__)
