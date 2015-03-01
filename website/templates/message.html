@@ -1,66 +1,111 @@
-<!-- templates/message.html -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta http-equiv="Content-Language" content="zh-CN"/>
-        <title>实时消息</title>
-        <link rel="stylesheet" href="http://getbootstrap.com/2.3.2/assets/css/bootstrap.css">
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script type="text/javascript" charset="utf-8">
-        $(document).ready(function(){
-            $('form').submit(function(event){
-                ws.send($(this).serialize());
-                return false;
-            });
-            if ("WebSocket" in window) {
-                ws = new WebSocket("ws://" + document.domain + ":5000/message/");
-                ws.onmessage = function (msg) {
-                    console.log(msg.data);
-                };
-            } else {
-                alert("WebSocket not supported");
-            }
-            window.onbeforeunload = function() {
-                ws.onclose = function () {
-                    console.log('unlodad')
-                };
-                ws.close()
-            };
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Flask-SocketIO Test</title>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      html, body, #map-canvas {
+        height: 89%;
+        margin: 0px;
+        padding: 0px
+      }
+    </style>
+
+
+
+  <script type="text/javascript" charset="utf-8">
+
+  var map
+
+  function initialize() {
+  var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
+  var mapOptions = {
+    zoom: 4,
+      center: myLatlng
+      };
+
+  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+
+    {% for result in data %}
+      var contentString_{{ result.id }} = "{{ result.text }}";
+      var infowindow_{{ result.id }} = new google.maps.InfoWindow({
+          content: contentString_{{ result.id }}
+          });
+
+      var lng = new google.maps.LatLng({{ result.geo }})
+
+      var marker_{{ result.id }} = new google.maps.Marker({
+          position: lng,
+          map: map,
+          title: 'Uluru (Ayers Rock)'
+      });
+
+      google.maps.event.addListener(marker_{{ result.id }}, 'click', function() {
+        infowindow_{{ result.id }}.open(map,marker_{{ result.id }});
         });
-        </script>
-    </head>
-    <body>
-        <div class="header container">
-            <h1>实时消息</h1>
-            <ul class="tabs">
-                <li class="active">
-                    <a href="/">DEMO</a>
-                </li>
-            </ul>
-        </div>
-        <div class="container">
-            Pls check your Chrome console.
-            <form class="row" id="message_form">
-                <div class="span10">
-                    <div class="clearfix">
-                        <label for="chat_content">消息</label>
-                        <div class="input">
-                            <textarea id="chat_content" name="content" class="xlarge" rows="6"></textarea>
-                        </div>
-                    </div>
-                    <div class="well align-center">
-                        <input type="submit" class="btn primary" value="发布">
-                        &nbsp;
-                        <input type="reset" class="btn" value="清空">
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="footer container">
-            <p>
-                &copy; Copyright by shonenada
-            </p>
-        </div>
-    </body>
+    {% endfor %}
+
+
+  }
+
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+    function createMarker(text, geo) {
+
+    }
+    function update(){
+        namespace = '/test'; // change to an empty string to use the global namespace
+            // the socket.io documentation recommends sending an explicit package upon connection
+            // this is specially important when using the global namespace
+            var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+            socket.on('connect', function() {
+                socket.emit('my event', {data: 'I\'m connected!'});
+            });
+            // event handler for server sent data
+            // the data is displayed in the "Received" section of the page
+            socket.on('my event', function(msg) {
+                $('#log').append('<br>Received #' + msg.data.text);
+                $('#log').append('<br>Received #' + msg.data.geo.lat);
+
+            var contentString = msg.data.text;
+            
+            var infowindow = new google.maps.InfoWindow({
+              content: contentString
+              });
+
+            var lng = new google.maps.LatLng(msg.data.geo.lat, msg.data.geo.lng)
+
+            var marker = new google.maps.Marker({
+                position: lng,
+                map: map,
+                title: 'Uluru (Ayers Rock)'
+          });
+          
+          google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map,marker);
+            });
+        
+          });  
+        }
+
+        $(document).ready(update());
+    </script>
+</head>
+<body>
+    <div id="map-canvas"></div>
+    <h1>Flask-SocketIO Test</h1>
+
+    <h2>Receive:</h2>
+    <div id="log"></div>
+    
+</body>
 </html>

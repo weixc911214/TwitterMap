@@ -12,6 +12,8 @@
       }
     </style>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
     <script>
 // This example displays a marker at the center of Australia.
 // When the user clicks the marker, an info window opens.
@@ -38,23 +40,19 @@ function initialize() {
 
     var lng = new google.maps.LatLng({{ result.geo }})
 
-    var marker_{{ result.id }} = new google.maps.Marker({
-        position: lng,
-        map: map,
-        title: 'Uluru (Ayers Rock)'
-    });
-
-    google.maps.event.addListener(marker_{{ result.id }}, 'click', function() {
-      infowindow_{{ result.id }}.open(map,marker_{{ result.id }});
-    });
   {% endfor %}
+
+
 
 
 }
 
+
 google.maps.event.addDomListener(window, 'load', initialize);
 
     </script>
+
+
   </head>
   <body>
 
