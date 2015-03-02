@@ -159,8 +159,8 @@ if __name__ == "__main__":
     # t = threading.Thread(target=ping_thread)
     # t.daemon = True
     # t.start()
-    application.run()
-    # socketio.run(application)
+    # application.run()
+    socketio.run(application)
     # SocketIOServer(('', 5000), app, resource="socket.io").serve_forever()
 
 
