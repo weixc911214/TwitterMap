@@ -1,27 +1,21 @@
 # -*- coding: utf-8 -*-
 __author__ = 'wei'
-from socketio import socketio_manage
 import gevent.monkey
 gevent.monkey.patch_all()
-import MySQLdb as sql
-from socketio.namespace import BaseNamespace
+# import MySQLdb as sql
 from flask import Flask, render_template
-from sqlalchemy import create_engine, MetaData, Table
+# from sqlalchemy import create_engine, MetaData, Table
 import time
 import tweepy
 from flask_socketio import SocketIO, emit
-thread = None
-
 
 
 application = Flask(__name__)
 application.config["DEBUG"] = True
 application.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(application)
-from threading import Thread, Event
 
 session = dict()
-api=object
 stream = object
 
 
