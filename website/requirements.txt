@@ -1,0 +1,4 @@
+Flask==0.10.1
+gevent==1.0.1
+tweepy==3.2.0
+Flask-SocketIO==0.5.0

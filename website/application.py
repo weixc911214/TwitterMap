@@ -84,20 +84,20 @@ class Stream_Listener(tweepy.StreamListener):
         author_id = status.author.id
         author_url = status.author.profile_image_url_https
         date = status.created_at
-        try:
-
-            db = sql.connect(host='cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com', user='weixc1234', passwd='wxc16888', db='innodb', cursorclass=sql.cursors.DictCursor)
-            cursor = db.cursor()
-            #print geo
-            test_sql ="""INSERT INTO innodb.TwitterMap(id, text, geo, author_name, author_id, author_url, date) VALUES(\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\")""" % (str(tweet_id), text, location, author_name, str(author_id), author_url, date)
-            #print test_sql
-            cursor.execute(test_sql)
-            db.commit()
-            db.close()
-            print "success"
-            #print test_sql
-        except:
-            pass
+        # try:
+        #
+        #     db = sql.connect(host='cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com', user='weixc1234', passwd='wxc16888', db='innodb', cursorclass=sql.cursors.DictCursor)
+        #     cursor = db.cursor()
+        #     #print geo
+        #     test_sql ="""INSERT INTO innodb.TwitterMap(id, text, geo, author_name, author_id, author_url, date) VALUES(\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\")""" % (str(tweet_id), text, location, author_name, str(author_id), author_url, date)
+        #     #print test_sql
+        #     cursor.execute(test_sql)
+        #     db.commit()
+        #     db.close()
+        #     print "success"
+        #     #print test_sql
+        # except:
+        #     pass
 
     def ack(self):
         print 'message was received!'
@@ -112,11 +112,11 @@ class Stream_Listener(tweepy.StreamListener):
 
 @application.route("/")
 def index():
-    engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/innodb', convert_unicode=True)
-    metadata = MetaData(bind=engine)
-    tweets = Table('TwitterMap', metadata, autoload = True)
-    result = tweets.select(tweets.c.text.like("%Columbia%")).execute().fetchall()
-
+    # engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/innodb', convert_unicode=True)
+    # metadata = MetaData(bind=engine)
+    # tweets = Table('TwitterMap', metadata, autoload = True)
+    # result = tweets.select(tweets.c.text.like("%Columbia%")).execute().fetchall()
+    result = []
     return render_template("index.html", data = result)
 
     # for r in result:
@@ -125,11 +125,11 @@ def index():
 
 @application.route('/message.html')
 def message():
-    engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/innodb', convert_unicode=True)
-    metadata = MetaData(bind=engine)
-    tweets = Table('TwitterMap', metadata, autoload = True)
-    result = tweets.select(tweets.c.text.like("%Columbia%")).execute().fetchall()
-
+    # engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/innodb', convert_unicode=True)
+    # metadata = MetaData(bind=engine)
+    # tweets = Table('TwitterMap', metadata, autoload = True)
+    # result = tweets.select(tweets.c.text.like("%Columbia%")).execute().fetchall()
+    result = []
     # for r in result:
     #     print type(r["text"])
 
@@ -152,11 +152,11 @@ def test_message(message):
 
 @application.route("/heatmap.html")
 def heatmap():
-    engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/innodb', convert_unicode=True)
-    metadata = MetaData(bind=engine)
-    tweets = Table('TwitterMap', metadata, autoload = True)
-    result = tweets.select(tweets.c.text.like("%Columbia%")).execute().fetchall()
-
+    # engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/innodb', convert_unicode=True)
+    # metadata = MetaData(bind=engine)
+    # tweets = Table('TwitterMap', metadata, autoload = True)
+    # result = tweets.select(tweets.c.text.like("%Columbia%")).execute().fetchall()
+    result = []
     return render_template("heatmap.html", data = result)
 
 
