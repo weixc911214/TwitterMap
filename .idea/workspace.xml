@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="607db22e-24b0-4d19-85b3-6ad7aa49cc11" name="Default" comment="" />
+    <list default="true" id="607db22e-24b0-4d19-85b3-6ad7aa49cc11" name="Default" comment="">
+      <change type="MOVED" beforePath="$PROJECT_DIR$/website/templates/Base.html" afterPath="$PROJECT_DIR$/website/templates/base.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="TwitterMap.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -87,8 +90,8 @@
       <file leaf-file-name="base.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/website/templates/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.16028708" vertical-offset="677" max-vertical-offset="4392">
-              <caret line="31" column="111" selection-start-line="31" selection-start-column="111" selection-end-line="31" selection-end-column="111" />
+            <state vertical-scroll-proportion="-2.0669856" vertical-offset="1656" max-vertical-offset="4440">
+              <caret line="33" column="90" selection-start-line="33" selection-start-column="90" selection-end-line="33" selection-end-column="90" />
               <folding />
             </state>
           </provider>
@@ -1017,8 +1020,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/website/templates/base.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.16028708" vertical-offset="677" max-vertical-offset="4392">
-          <caret line="31" column="111" selection-start-line="31" selection-start-column="111" selection-end-line="31" selection-end-column="111" />
+        <state vertical-scroll-proportion="-2.0669856" vertical-offset="1656" max-vertical-offset="4440">
+          <caret line="33" column="90" selection-start-line="33" selection-start-column="90" selection-end-line="33" selection-end-column="90" />
           <folding />
         </state>
       </provider>
