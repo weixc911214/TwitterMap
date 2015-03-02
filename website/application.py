@@ -10,7 +10,7 @@ import tweepy
 from flask_socketio import SocketIO, emit
 
 
-application = Flask(__name__)
+application = Flask(__name__,  static_url_path='/static')
 application.config["DEBUG"] = True
 application.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(application)
