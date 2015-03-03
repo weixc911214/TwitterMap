@@ -1,24 +1,8 @@
 {% extends "base.html" %}
 {% block body %}
-
-    <div>
-        <select name="select_mail">
-        <option value="none">选择邮箱</option>
-
-    {% for k in arr %}
-    <option value={{ k }}>{{ k }}</option>
-    {% endfor %}
-        </select>
-        </div>
     <div id="map-canvas"></div>
-
-
-    <div>
-    <div id="log">
-                <h1>Realtime Map</h1>
+    <h1>Realtime Map</h1>
 
     <h2>Receive:</h2>
-    </div>
-
-    </div>
-        {% endblock %}
+    <div id="log"></div>
+{% endblock %}

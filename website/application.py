@@ -4,7 +4,7 @@ import gevent.monkey
 gevent.monkey.patch_all()
 # import MySQLdb as sql
 from flask import Flask, render_template
-from sqlalchemy import create_engine, MetaData, Table
+# from sqlalchemy import create_engine, MetaData, Table
 import time
 import tweepy
 from flask_socketio import SocketIO, emit
@@ -17,7 +17,7 @@ socketio = SocketIO(application)
 
 session = dict()
 stream = object
-arr = ["Starbucks", "Columbia", "New York", "a"]
+
 
 consumer_key = "anbpwuMUw7nIlo5SXAxCU803j"
 
@@ -37,6 +37,8 @@ class Stream_Listener(tweepy.StreamListener):
 
     def on_status(self, status):
 
+        # status.text, "\n"
+        #print status.id
         #update(status.text)
         if status.geo is None:
             return
@@ -49,8 +51,17 @@ class Stream_Listener(tweepy.StreamListener):
         data['id'] = str(status.id)
         data['source'] = status.source
 
+        # self.channel.basic_publish(exchange='',
+        #                             routing_key='twitter_topic_feed',
+        #
+        #                         body=json.dumps(data))
+        #test_message
+        #TweetsNamespace.broadcast('tweet_text', json.dumps(data))
         global socketio
-
+        #def do():
+        #test_message(data)
+        #socketio.on('my event', namespace='/test')
+        #socketio.emit('my event', {'data': data}, callback=self.ack())
         emit('my event', {'data': data})
         print data
 
@@ -67,7 +78,6 @@ class Stream_Listener(tweepy.StreamListener):
         author_id = status.author.id
         author_url = status.author.profile_image_url_https
         date = status.created_at
-        
         # try:
         #
         #     db = sql.connect(host='cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com', user='weixc1234', passwd='wxc16888', db='innodb', cursorclass=sql.cursors.DictCursor)
@@ -96,27 +106,36 @@ class Stream_Listener(tweepy.StreamListener):
 
 @application.route("/")
 def index():
-    #result = get_result()
+    # engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/innodb', convert_unicode=True)
+    # metadata = MetaData(bind=engine)
+    # tweets = Table('TwitterMap', metadata, autoload = True)
+    # result = tweets.select(tweets.c.text.like("%Columbia%")).execute().fetchall()
     result = []
-
     return render_template("index.html", data = result)
 
-
+    # for r in result:
+    #     print type(r["text"])
 
 
 @application.route('/message.html')
 def message():
-    #result = get_result()
+    # engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/innodb', convert_unicode=True)
+    # metadata = MetaData(bind=engine)
+    # tweets = Table('TwitterMap', metadata, autoload = True)
+    # result = tweets.select(tweets.c.text.like("%Columbia%")).execute().fetchall()
     result = []
-    global arr
-    return render_template("message.html", data = result, arr = arr)
+    # for r in result:
+    #     print type(r["text"])
+
+    return render_template("message.html", data = result)
 
 
 @socketio.on('my event', namespace='/test')
 def test_message(message):
     print message
     global socketio
-
+    #print message
+    # emit('my event', {'data': message})
     sl = Stream_Listener()
 
     stream = tweepy.Stream(auth=api.auth, listener=Stream_Listener())
@@ -127,24 +146,22 @@ def test_message(message):
 
 @application.route("/heatmap.html")
 def heatmap():
-
-    #result = get_result()
-    result = []
-    return render_template("heatmap.html", data = result)
-
-
-def get_result():
     # engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/innodb', convert_unicode=True)
     # metadata = MetaData(bind=engine)
     # tweets = Table('TwitterMap', metadata, autoload = True)
     # result = tweets.select(tweets.c.text.like("%Columbia%")).execute().fetchall()
     result = []
-    return result
+    return render_template("heatmap.html", data = result)
+
 
 
 if __name__ == "__main__":
+    # t = threading.Thread(target=ping_thread)
+    # t.daemon = True
+    # t.start()
+    # application.run()
     socketio.run(application)
-
+    # SocketIOServer(('', 5000), app, resource="socket.io").serve_forever()
 
 
 
