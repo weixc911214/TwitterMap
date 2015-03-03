@@ -88,7 +88,7 @@
         <entry file="file://$PROJECT_DIR$/website/templates/base.html">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.3783784" vertical-offset="2496" max-vertical-offset="4632">
-              <caret line="111" column="83" selection-start-line="111" selection-start-column="83" selection-end-line="111" selection-end-column="83" />
+              <caret line="111" column="6" selection-start-line="111" selection-start-column="6" selection-end-line="111" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -901,7 +901,7 @@
     <entry file="file://$PROJECT_DIR$/website/templates/base.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.3783784" vertical-offset="2496" max-vertical-offset="4632">
-          <caret line="111" column="83" selection-start-line="111" selection-start-column="83" selection-end-line="111" selection-end-column="83" />
+          <caret line="111" column="6" selection-start-line="111" selection-start-column="6" selection-end-line="111" selection-end-column="6" />
           <folding />
         </state>
       </provider>
