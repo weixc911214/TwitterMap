@@ -37,9 +37,6 @@ class Stream_Listener(tweepy.StreamListener):
 
     def on_status(self, status):
 
-        # status.text, "\n"
-        #print status.id
-        #update(status.text)
         if status.geo is None:
             return
         data = {}
@@ -51,17 +48,9 @@ class Stream_Listener(tweepy.StreamListener):
         data['id'] = str(status.id)
         data['source'] = status.source
 
-        # self.channel.basic_publish(exchange='',
-        #                             routing_key='twitter_topic_feed',
-        #
-        #                         body=json.dumps(data))
-        #test_message
-        #TweetsNamespace.broadcast('tweet_text', json.dumps(data))
+
         global socketio
-        #def do():
-        #test_message(data)
-        #socketio.on('my event', namespace='/test')
-        #socketio.emit('my event', {'data': data}, callback=self.ack())
+
         emit('my event', {'data': data})
         print data
 
@@ -156,12 +145,8 @@ def heatmap():
 
 
 if __name__ == "__main__":
-    # t = threading.Thread(target=ping_thread)
-    # t.daemon = True
-    # t.start()
-    # application.run()
     socketio.run(application)
-    # SocketIOServer(('', 5000), app, resource="socket.io").serve_forever()
+
 
 
 
