@@ -100,8 +100,8 @@
             // the socket.io documentation recommends sending an explicit package upon connection
             // this is specially important when using the global namespace
         aws = 'http://twitter-ymaptgsfrr.elasticbeanstalk.com';
-            // var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
-            var socket = io.connect('http://ec2-52-11-84-185.us-west-2.compute.amazonaws.com:8080');
+             //var socket = io.connect('http://' + document.domain + ':' + location.port );
+            var socket = io.connect('http://ec2-52-11-84-185.us-west-2.compute.amazonaws.com:80');
             socket.on('connect', function() {
                 socket.emit('my event', {data: 'I\'m connected!'});
             });
