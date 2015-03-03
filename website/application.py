@@ -145,7 +145,7 @@ def heatmap():
 
 
 if __name__ == "__main__":
-    socketio.run(application, policy_server=False)
+    socketio.run(application, port=5000, policy_server=False, transports='websocket')
 
 
 
