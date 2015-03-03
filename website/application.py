@@ -44,7 +44,7 @@ class Stream_Listener(tweepy.StreamListener):
         data['created_at'] = time.mktime(status.created_at.timetuple())
         data['geo'] = { "lat" : status.geo["coordinates"][0], "lng": status.geo["coordinates"][1]}
 
-        #print data['geo']
+        print data['geo']
         data['id'] = str(status.id)
         data['source'] = status.source
 
@@ -151,6 +151,10 @@ def heatmap():
     return render_template("heatmap.html", data = result)
 
 
+
+@application.route('/foundation')
+def foundation():
+    return render_template("foundation.html")
 
 if __name__ == "__main__":
     socketio.run(application, port=5000, policy_server=False, transports=['websocket'])
