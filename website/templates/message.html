@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 {% block body %}
+        <div id = "select">
+            <form action="/message.html" method="post">
+            <div>
+                <div>
+                    <input type="text" placeholder="keyword" name="keyword" required>
+                    <button class="submit" type="submit">Commit</button>
+                </div>
+            </div>
+        </form>
+    </div>
     <div id="map-canvas"></div>
     <h1>Realtime Map</h1>
 

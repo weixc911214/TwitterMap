@@ -3,7 +3,7 @@ __author__ = 'wei'
 import gevent.monkey
 gevent.monkey.patch_all()
 # import MySQLdb as sql
-from flask import Flask, render_template
+from flask import Flask, render_template,request
 # from sqlalchemy import create_engine, MetaData, Table
 import time
 import tweepy
@@ -17,7 +17,7 @@ socketio = SocketIO(application)
 
 session = dict()
 stream = object
-
+keyword = ""
 
 consumer_key = "anbpwuMUw7nIlo5SXAxCU803j"
 
@@ -44,7 +44,7 @@ class Stream_Listener(tweepy.StreamListener):
         data['created_at'] = time.mktime(status.created_at.timetuple())
         data['geo'] = { "lat" : status.geo["coordinates"][0], "lng": status.geo["coordinates"][1]}
 
-        print data['geo']
+        #print data['geo']
         data['id'] = str(status.id)
         data['source'] = status.source
 
@@ -52,7 +52,7 @@ class Stream_Listener(tweepy.StreamListener):
         global socketio
 
         emit('my event', {'data': data})
-        print data
+        #print data
 
         try:
             text = status.text.encode("utf8")
@@ -106,15 +106,18 @@ def index():
     #     print type(r["text"])
 
 
-@application.route('/message.html')
+@application.route('/message.html',methods=["GET", "POST"])
 def message():
+    if request.method == "POST":
+        global keyword
+        keyword = request.form["keyword"]
+        print keyword
     # engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/innodb', convert_unicode=True)
     # metadata = MetaData(bind=engine)
     # tweets = Table('TwitterMap', metadata, autoload = True)
     # result = tweets.select(tweets.c.text.like("%Columbia%")).execute().fetchall()
     result = []
-    # for r in result:
-    #     print type(r["text"])
+
 
     return render_template("message.html", data = result)
 
@@ -128,13 +131,18 @@ def test_message(message):
     sl = Stream_Listener()
 
     stream = tweepy.Stream(auth=api.auth, listener=Stream_Listener())
-
-    stream.filter(track=['a'])
+    global keyword
+    print "global keyword: %s" %keyword
+    stream.filter(track=[keyword])
     #print "success"
 
 
-@application.route("/heatmap.html")
+@application.route("/heatmap.html", methods=["GET", "POST"])
 def heatmap():
+    if request.method == "POST":
+        global keyword
+        keyword = request.form["keyword"]
+        print keyword
     # engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/innodb', convert_unicode=True)
     # metadata = MetaData(bind=engine)
     # tweets = Table('TwitterMap', metadata, autoload = True)
@@ -145,7 +153,7 @@ def heatmap():
 
 
 if __name__ == "__main__":
-    socketio.run(application, port=5000, policy_server=False, transports='websocket')
+    socketio.run(application, port=5000, policy_server=False, transports=['websocket'])
 
 
 

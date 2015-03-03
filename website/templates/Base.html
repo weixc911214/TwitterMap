@@ -37,9 +37,7 @@
     <meta charset="utf-8">
     <style>
       html, body, #map-canvas {
-        height: 89%;
-        margin: 0px;
-        padding: 0px
+        height: 89%
       }
     </style>
 
@@ -101,9 +99,9 @@
             // the socket.io documentation recommends sending an explicit package upon connection
             // this is specially important when using the global namespace
           var aws = 'http://twitter-ymaptgsfrr.elasticbeanstalk.com' + namespace;
-            //var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+            var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
             //var socket = io.connect('http://ec2-52-11-84-185.us-west-2.compute.amazonaws.com' + namespace, { transports: ['websocket']});
-            var socket = io.connect('ws://ec2-52-11-84-185.us-west-2.compute.amazonaws.com:80' + namespace);
+            //var socket = io.connect('ws://ec2-52-11-84-185.us-west-2.compute.amazonaws.com:80' + namespace);
             //var socket = io.connect('http://52.11.84.185:80' + namespace);
             //var socket = io.connect(aws)
             socket.on('connect', function() {
