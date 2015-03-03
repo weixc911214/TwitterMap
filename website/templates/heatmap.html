@@ -47,7 +47,6 @@
         height: 89%;
         margin: 0px;
         color:#fff;
-        padding: 0px
       }
     </style>
 
@@ -71,7 +70,7 @@
 
 var taxiData = [
   {% for result in data %}
-  
+
   new google.maps.LatLng({{ result.geo }}),
   {% endfor %}
   new google.maps.LatLng(37.751266, -122.403355)
@@ -183,19 +182,23 @@ google.maps.event.addDomListener(window, 'load', initialize);
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-    
-    <div id="panel">
-      <button onclick="toggleHeatmap()">Toggle Heatmap</button>
-      <button onclick="changeGradient()">Change gradient</button>
-      <button onclick="changeRadius()">Change radius</button>
-      <button onclick="changeOpacity()">Change opacity</button>
-    </div>
+
+
+    <!--<div id="panel">-->
+      <!--<button onclick="toggleHeatmap()">Toggle Heatmap</button>-->
+      <!--<button onclick="changeGradient()">Change gradient</button>-->
+      <!--<button onclick="changeRadius()">Change radius</button>-->
+      <!--<button onclick="changeOpacity()">Change opacity</button>-->
+    <!--</div>-->
     <div id="map-canvas"></div>
-    <h1>Realtime Map</h1>
+    <div>
+    <div id="log">
+                <h1>Realtime Map</h1>
 
     <h2>Receive:</h2>
-    <div id="log"></div>
+    </div>
 
+    </div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

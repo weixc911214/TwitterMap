@@ -38,6 +38,14 @@
     <style>
       html, body, #map-canvas {
         height: 89%;
+      }
+        #log {
+        width: 50%;
+        margin: 0px;
+        padding: 0px
+      }
+        #select {
+        width: 50%;
         margin: 0px;
         padding: 0px
       }
@@ -100,8 +108,8 @@
             // the socket.io documentation recommends sending an explicit package upon connection
             // this is specially important when using the global namespace
         aws = 'http://twitter-ymaptgsfrr.elasticbeanstalk.com';
-            // var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
-            var socket = io.connect('http://twitter-ymaptgsfrr.elasticbeanstalk.com/text');
+             var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+            //var socket = io.connect('http://twitter-ymaptgsfrr.elasticbeanstalk.com/text');
             socket.on('connect', function() {
                 socket.emit('my event', {data: 'I\'m connected!'});
             });
