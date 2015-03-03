@@ -130,7 +130,7 @@ def message():
     return render_template("message.html", data = result)
 
 
-@socketio.on('my event', namespace='/test')
+@socketio.on('my event')
 def test_message(message):
     print message
     global socketio
