@@ -157,7 +157,7 @@ def foundation():
     return render_template("foundation.html")
 
 if __name__ == "__main__":
-    socketio.run(application, port=5000, policy_server=False, transports=['websocket'])
+    socketio.run(application, port=5000, policy_server=False)
 
 
 
