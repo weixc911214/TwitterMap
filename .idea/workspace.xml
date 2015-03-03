@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="607db22e-24b0-4d19-85b3-6ad7aa49cc11" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/website/application.py" afterPath="$PROJECT_DIR$/website/application.py" />
-    </list>
+    <list default="true" id="607db22e-24b0-4d19-85b3-6ad7aa49cc11" name="Default" comment="" />
     <ignored path="TwitterMap.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
