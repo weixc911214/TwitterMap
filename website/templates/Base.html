@@ -109,7 +109,7 @@
             // this is specially important when using the global namespace
         aws = 'http://twitter-ymaptgsfrr.elasticbeanstalk.com';
       //var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
-            var socket = io.connect('http://twitter-ymaptgsfrr.elasticbeanstalk.com:80/text');
+            var socket = io.connect('http://twitter-ymaptgsfrr.elasticbeanstalk.com/text');
             socket.on('connect', function() {
                 socket.emit('my event', {data: 'I\'m connected!'});
             });
