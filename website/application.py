@@ -31,7 +31,7 @@ auth.set_access_token(access_token, access_token_secret)
 
 api = tweepy.API(auth)
 
-@socketio.on('my event', namespace='/test')
+@socketio.on('my event')
 class Stream_Listener(tweepy.StreamListener):
 
 
