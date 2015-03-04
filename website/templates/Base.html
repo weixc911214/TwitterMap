@@ -110,7 +110,7 @@
           var aws = 'http://twitter-ymaptgsfrr.elasticbeanstalk.com:5000' + namespace;
             //var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
             //var socket = io.connect('http://ec2-52-11-84-185.us-west-2.compute.amazonaws.com' + namespace, { transports: ['websocket']});
-            var socket = io.connect('ws://ec2-52-11-84-185.us-west-2.compute.amazonaws.com' + namespace);
+            var socket = io.connect('http://ec2-52-11-84-185.us-west-2.compute.amazonaws.com' + namespace);
             //var socket = io.connect('http://52.11.84.185:80' + namespace);
             //var socket = io.connect(aws)
             socket.on('connect', function() {
