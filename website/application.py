@@ -179,12 +179,12 @@ def handle_websocket(ws):
 
 @application.route('/sockets')
 def sockets():
-    return render_template('socket.html', port=5000)
+    return render_template('socket.html', port=8080)
 
 if __name__ == "__main__":
     #socketio.run(application, port=5000, policy_server=False)
-    http_server = WSGIServer(("",5000), wsgi_app, handler_class=WebSocketHandler)
-    print('Server started at %s:%s'%("localhost",5000))
+    http_server = WSGIServer(("",8080), wsgi_app, handler_class=WebSocketHandler)
+    print('Server started at %s:%s'%("localhost",8080))
     http_server.serve_forever()
 
 
