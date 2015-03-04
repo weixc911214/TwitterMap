@@ -3,24 +3,21 @@ __author__ = 'wei'
 import gevent.monkey
 gevent.monkey.patch_all()
 # import MySQLdb as sql
-from flask_sockets import Sockets
 from flask import Flask, render_template,request
 # from sqlalchemy import create_engine, MetaData, Table
 import time
 import tweepy
 from flask_socketio import SocketIO, emit
-from gevent.pywsgi import WSGIServer
-from geventwebsocket.handler import WebSocketHandler
-import json
+
 
 application = Flask(__name__,  static_url_path='/static')
 application.config["DEBUG"] = True
 application.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(application)
-sockets = Sockets(application)
+
 session = dict()
 stream = object
-keyword = ""
+keyword = "a"
 
 consumer_key = "anbpwuMUw7nIlo5SXAxCU803j"
 
@@ -151,7 +148,7 @@ def heatmap():
     # tweets = Table('TwitterMap', metadata, autoload = True)
     # result = tweets.select(tweets.c.text.like("%Columbia%")).execute().fetchall()
     result = []
-    return render_template("heatmap.html", data = result)
+    return render_template("foundation.html", data = result)
 
 
 
@@ -159,33 +156,9 @@ def heatmap():
 def foundation():
     return render_template("foundation.html")
 
-
-def wsgi_app(environ, start_response):
-    path = environ["PATH_INFO"]
-    if path == "/":
-        return application(environ, start_response)
-    elif path == "/websocket":
-        handle_websocket(environ["wsgi.websocket"])
-    else:
-        return application(environ, start_response)
-
-def handle_websocket(ws):
-    while True:
-        message = ws.receive()
-        if message is None:
-            break
-        message = json.loads(message)
-        ws.send(json.dumps({'output': message['output']}))
-
-@application.route('/sockets')
-def sockets():
-    return render_template('socket.html', port=8080)
-
 if __name__ == "__main__":
     socketio.run(application, port=5000, policy_server=False)
-    # http_server = WSGIServer(("",8080), wsgi_app, handler_class=WebSocketHandler)
-    # print('Server started at %s:%s'%("localhost",8080))
-    # http_server.serve_forever()
+
 
 
 

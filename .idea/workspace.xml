@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="607db22e-24b0-4d19-85b3-6ad7aa49cc11" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/website/application.py" afterPath="$PROJECT_DIR$/website/application.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/website/templates/socket.html" afterPath="$PROJECT_DIR$/website/templates/socket.html" />
     </list>
     <ignored path="TwitterMap.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,8 +30,8 @@
       <file leaf-file-name="application.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/website/application.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.1069183" vertical-offset="3411" max-vertical-offset="4752">
-              <caret line="184" column="4" selection-start-line="184" selection-start-column="4" selection-end-line="184" selection-end-column="4" />
+            <state vertical-scroll-proportion="-1.0062894" vertical-offset="936" max-vertical-offset="4104">
+              <caret line="19" column="12" selection-start-line="19" selection-start-column="12" selection-end-line="19" selection-end-column="12" />
               <folding />
             </state>
           </provider>
@@ -39,8 +40,8 @@
       <file leaf-file-name="socket.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/website/templates/socket.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.4545455" vertical-offset="36" max-vertical-offset="1296">
-              <caret line="9" column="10" selection-start-line="9" selection-start-column="10" selection-end-line="9" selection-end-column="10" />
+            <state vertical-scroll-proportion="-5.4545455" vertical-offset="108" max-vertical-offset="1344">
+              <caret line="12" column="10" selection-start-line="12" selection-start-column="10" selection-end-line="12" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -89,8 +90,8 @@
       <file leaf-file-name="heatmap.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/website/templates/heatmap.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="5.090909" vertical-offset="2232" max-vertical-offset="5304">
-              <caret line="86" column="0" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
+            <state vertical-scroll-proportion="-5.090909" vertical-offset="4224" max-vertical-offset="5304">
+              <caret line="183" column="54" selection-start-line="183" selection-start-column="18" selection-end-line="183" selection-end-column="54" />
               <folding />
             </state>
           </provider>
@@ -886,14 +887,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/website/forms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="240">
-          <caret line="4" column="8" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/website/templates/message.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="48" max-vertical-offset="552">
@@ -920,24 +913,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/website/templates/heatmap.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="5.090909" vertical-offset="2232" max-vertical-offset="5304">
-          <caret line="86" column="0" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
+        <state vertical-scroll-proportion="-5.090909" vertical-offset="4224" max-vertical-offset="5304">
+          <caret line="183" column="54" selection-start-line="183" selection-start-column="18" selection-end-line="183" selection-end-column="54" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/website/templates/socket.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.4545455" vertical-offset="36" max-vertical-offset="1296">
-          <caret line="9" column="10" selection-start-line="9" selection-start-column="10" selection-end-line="9" selection-end-column="10" />
+        <state vertical-scroll-proportion="-5.4545455" vertical-offset="108" max-vertical-offset="1344">
+          <caret line="12" column="10" selection-start-line="12" selection-start-column="10" selection-end-line="12" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/website/forms.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="240">
+          <caret line="4" column="8" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/website/application.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.1069183" vertical-offset="3411" max-vertical-offset="4752">
-          <caret line="184" column="4" selection-start-line="184" selection-start-column="4" selection-end-line="184" selection-end-column="4" />
+        <state vertical-scroll-proportion="-1.0062894" vertical-offset="936" max-vertical-offset="4104">
+          <caret line="19" column="12" selection-start-line="19" selection-start-column="12" selection-end-line="19" selection-end-column="12" />
           <folding />
         </state>
       </provider>
