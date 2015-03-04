@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Foundation Template | Blog</title>
+  <meta name="description" content="Documentation and reference library for ZURB Foundation. JavaScript, CSS, components, grid and more."/>
+  <meta name="author" content="ZURB, inc. ZURB network also includes zurb.com"/>
+  <meta name="copyright" content="ZURB, inc. Copyright (c) 2015"/>
+  <link rel="stylesheet" href="http://foundation.zurb.com/assets/css/templates/foundation.css"/>
+  <script src="http://foundation.zurb.com/assets/js/modernizr.js"></script>
+
+    <style>
+      #map-canvas {
+        height: 600px;
+        width: 700px;
+        margin: 0px;
+        padding: 0px
+      }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+        <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+
+  <script type="text/javascript" charset="utf-8">
+
+  var map
+
+  function initialize() {
+  var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
+  var mapOptions = {
+    zoom: 4,
+      center: myLatlng
+      };
+
+  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+
+    {% for result in data %}
+      var contentString_{{ result.id }} = "{{ result.text }}";
+      var infowindow_{{ result.id }} = new google.maps.InfoWindow({
+          content: contentString_{{ result.id }}
+          });
+
+      var lng = new google.maps.LatLng({{ result.geo }})
+
+      var marker_{{ result.id }} = new google.maps.Marker({
+          position: lng,
+          map: map,
+          title: 'Uluru (Ayers Rock)'
+      });
+
+      google.maps.event.addListener(marker_{{ result.id }}, 'click', function() {
+        infowindow_{{ result.id }}.open(map,marker_{{ result.id }});
+        });
+    {% endfor %}
+
+
+  }
+
+  var pinColor = "FE7569";
+  var pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + pinColor,
+        new google.maps.Size(21, 34),
+        new google.maps.Point(0,0),
+        new google.maps.Point(10, 34));
+  var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
+        new google.maps.Size(40, 37),
+        new google.maps.Point(0, 0),
+        new google.maps.Point(12, 35));
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+    function createMarker(text, geo) {
+
+    }
+    function update(){
+        namespace = '/test'; // change to an empty string to use the global namespace
+            // the socket.io documentation recommends sending an explicit package upon connection
+            // this is specially important when using the global namespace
+          //var aws = 'http://twitter-ymaptgsfrr.elasticbeanstalk.com:5000' + namespace;
+            //var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
+            //var socket = io.connect('http://ec2-52-11-84-185.us-west-2.compute.amazonaws.com' + namespace, { transports: ['websocket']});
+            var socket = io.connect('http://elasticbeanstalk-us-west-2-493015455903.s3-website-us-west-2.amazonaws.com:5000' + namespace);
+            //var socket = io.connect('http://52.11.84.185:80' + namespace);
+            //var socket = io.connect(aws)
+            socket.on('connect', function() {
+                socket.emit('my event', {data: 'I\'m connected!'});
+            });
+            // event handler for server sent data
+            // the data is displayed in the "Received" section of the page
+            socket.on('my event', function(msg) {
+                // $('#log').append('<br>Received New Tweet: ');
+                // $('#log').append('<br>Text: ' + msg.data.text);
+                // $('#log').append('<br>Lat: ' + msg.data.geo.lat);
+                // $('#log').append('<br>Lng: ' + msg.data.geo.lng);
+
+            var contentString = msg.data.text;
+
+            var infowindow = new google.maps.InfoWindow({
+              content: contentString
+              });
+
+            var lng = new google.maps.LatLng(msg.data.geo.lat, msg.data.geo.lng)
+
+            var marker = new google.maps.Marker({
+                position: lng,
+                map: map,
+                icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+                shadow: pinShadow,
+                title: 'Uluru (Ayers Rock)'
+          });
+
+          google.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map,marker);
+            });
+
+          });
+        }
+
+        $(document).ready(update());
+    </script>
+  </head>
+  <body>
+
+  <div class="row">
+<div class="large-12 columns">
+<div class="nav-bar right">
+<ul class="button-group">
+<li><a href="#" class="button">Link 1</a></li>
+<li><a href="#" class="button">Link 2</a></li>
+<li><a href="#" class="button">Link 3</a></li>
+<li><a href="#" class="button">Link 4</a></li>
+</ul>
+</div>
+<h1>Blog <small>This is my blog. It's awesome.</small></h1>
+<hr/>
+</div>
+</div>
+
+<div class="row">
+ 
+<div class="large-9 columns" role="content">
+  <div id="map-canvas"></div>
+
+
+</div>
+
+  <aside class="large-3 columns">
+<h5>Categories</h5>
+<ul class="side-nav">
+<li><a href="#">News</a></li>
+<li><a href="#">Code</a></li>
+<li><a href="#">Design</a></li>
+<li><a href="#">Fun</a></li>
+<li><a href="#">Weasels</a></li>
+</ul>
+<div class="panel">
+<h5>Featured</h5>
+<p>Pork drumstick turkey fugiat. Tri-tip elit turducken pork chop in. Swine short ribs meatball irure bacon nulla pork belly cupidatat meatloaf cow.</p>
+<a href="#">Read More &rarr;</a>
+</div>
+</aside>
+</div>
+
+
+
+
+<footer class="row">
+<div class="large-12 columns">
+<hr/>
+<div class="row">
+<div class="large-6 columns">
+<p>&copy; Copyright no one at all. Go to town.</p>
+</div>
+<div class="large-6 columns">
+<ul class="inline-list right">
+<li><a href="#">Link 1</a></li>
+<li><a href="#">Link 2</a></li>
+<li><a href="#">Link 3</a></li>
+<li><a href="#">Link 4</a></li>
+</ul>
+</div>
+</div>
+</div>
+</footer>
+
+<script src="http://foundation.zurb.com/assets/js/jquery.js"></script>
+
+<script src="http://foundation.zurb.com/assets/js/jquery.js"></script>
+<script src="http://foundation.zurb.com/assets/js/templates/foundation.js"></script>
+// <script>
+//       $(document).foundation();
+
+//       var doc = document.documentElement;
+//       doc.setAttribute('data-useragent', navigator.userAgent);
+//     </script>
+  </body>
+</html>
