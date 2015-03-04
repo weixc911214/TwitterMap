@@ -109,8 +109,8 @@
             // this is specially important when using the global namespace
           var aws = 'http://twitter-ymaptgsfrr.elasticbeanstalk.com:5000' + namespace;
             //var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
-            //var socket = io.connect('http://ec2-52-11-84-185.us-west-2.compute.amazonaws.com' + namespace, { transports: ['websocket']});
-            var socket = io.connect('http://elasticbeanstalk-us-west-2-493015455903.s3-website-us-west-2.amazonaws.com:5000' + namespace);
+            var socket = io.connect('http://ec2-52-11-84-185.us-west-2.compute.amazonaws.com' + namespace, { transports: ['websocket']});
+            //var socket = io.connect('http://elasticbeanstalk-us-west-2-493015455903.s3-website-us-west-2.amazonaws.com:5000' + namespace);
             //var socket = io.connect('http://52.11.84.185:80' + namespace);
             //var socket = io.connect(aws)
             socket.on('connect', function() {
@@ -119,10 +119,10 @@
             // event handler for server sent data
             // the data is displayed in the "Received" section of the page
             socket.on('my event', function(msg) {
-                $('#log').append('<br>Received New Tweet: ');
-                $('#log').append('<br>Text: ' + msg.data.text);
-                $('#log').append('<br>Lat: ' + msg.data.geo.lat);
-                $('#log').append('<br>Lng: ' + msg.data.geo.lng);
+                // $('#log').append('<br>Received New Tweet: ');
+                // $('#log').append('<br>Text: ' + msg.data.text);
+                // $('#log').append('<br>Lat: ' + msg.data.geo.lat);
+                // $('#log').append('<br>Lng: ' + msg.data.geo.lng);
 
             var contentString = msg.data.text;
 
