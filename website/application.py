@@ -227,14 +227,14 @@ def foundation():
 
 if __name__ == "__main__":
 
-    pywsgi.WSGIServer(('', 8000), application, handler_class=WebSocketHandler) \
-          .serve_forever()
+    # pywsgi.WSGIServer(('', 8000), application, handler_class=WebSocketHandler) \
+    #       .serve_forever()
     # from gevent.pywsgi import WSGIServer
     # from geventwebsocket.handler import WebSocketHandler
     # http_server = WSGIServer(("localhost",8000), application, handler_class=WebSocketHandler)
     # print('Server started at %s:%s'%("localhost",8000))
     # http_server.serve_forever()
-    # socketio.run(application, port=5000)
+    socketio.run(application)
 
 
 
