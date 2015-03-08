@@ -16,9 +16,55 @@ application.config["DEBUG"] = True
 application.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(application)
 
+import gevent
+import gevent.queue
+from gevent import pywsgi
+from geventwebsocket.handler import WebSocketHandler
+from flask_sockets import Sockets
+sockets = Sockets(application)
+seekers = gevent.queue.Queue()
+
+def relay(from_, to):
+    """route messges from_ -> to"""
+    try:
+        while True:
+            to.send(from_.receive())
+    except:
+        # Notify to about disconnection - unless to disconnected
+        try: to.send("Peer disconnected.")
+        except: pass
+
+
+def session(ws1, ws2):
+    for ws in [ws1, ws2]:
+        ws.send("/Found a person. Say hello")
+    gevent.joinall([
+        gevent.spawn(relay, ws1, ws2),
+        gevent.spawn(relay, ws2, ws1)
+    ])
+
+
+def matcher(seekers):
+    while True:
+        gevent.spawn(session, seekers.get(), seekers.get())
+
+gevent.spawn(matcher, seekers)
+
+@sockets.route('/ws')
+def websocket(ws):
+    seekers.put(ws)
+    ws.send("/Welcome. Seeking a partner")
+    while True:  # hack to keep the greenlet alive
+        gevent.sleep(0.5)
+
+@application.route('/sockets')
+def sockets():
+    return render_template("socket.html")
+
+
 application.wsgi_app = ProxyFix(application.wsgi_app)
 
-session = dict()
+#session = dict()
 stream = object
 keyword = "a"
 
@@ -176,18 +222,19 @@ def foundation():
 #         message = json.loads(message)
 #         ws.send(json.dumps({'output': message['output']}))
 
-# @application.route('/sockets')
-# def sockets():
-#     return render_template("socket.html", port = 8000)
+
 
 
 if __name__ == "__main__":
+
+    pywsgi.WSGIServer(('', 8000), application, handler_class=WebSocketHandler) \
+          .serve_forever()
     # from gevent.pywsgi import WSGIServer
     # from geventwebsocket.handler import WebSocketHandler
     # http_server = WSGIServer(("localhost",8000), application, handler_class=WebSocketHandler)
     # print('Server started at %s:%s'%("localhost",8000))
     # http_server.serve_forever()
-    socketio.run(application, port=5000)
+    # socketio.run(application, port=5000)
 
 
 

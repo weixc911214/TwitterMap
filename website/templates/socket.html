@@ -1,47 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-<script>
-    $(function() {
-    if ("WebSocket" in window) {
-        ws = new WebSocket("ws://" + document.domain + ":{{port}}/websocket");
-        ws.onmessage = function (msg) {
-            var message = JSON.parse(msg.data);
-            $("p#log").html(message.output );
-        };
-    };
-    $('input[name=text]').on('keyup', function(e){
-        e.preventDefault();
-        var message = $(this).val();
-        ws.send(JSON.stringify({'output': message}));
-    });
-    $('input[name=text]').focus();
-    window.onbeforeunload = function() {
-        ws.onclose = function () {};
-        ws.close()
-    };
-});
-</script>
-<style>
-input {
-    font-size: 48px; 
-    width: 600px;
-    border-style: none; 
-    background-color: transparent; 
-    border-style: solid; 
-    border-width: 0px 0px 1px 0px; 
-}
-textarea:focus, input:focus{
-    outline: 0;
-}
-</style>
- 
-</head>
-<body>
-    <input type="text" name="text"  />
-    <p id="log"></p>
-    <p>--<br/>Websockets Echo Server using Gevent-websocket & Flask</p>
-</body>
+<html>
+  <head>
+    <script type="text/javascript" src="omegle.js"></script>
+  </head>
+  <body>
+    <form>
+      <input type="button" id="seek" value="Seek" onclick="client.seek();" />
+      
+      <div id="chat">
+        <div id="messages"></div>
+        <input id="send_message" />
+        <input type="button" id="send" value="Send" onclick="client.send();" />
+        <input type="button" id="disconnect" value="Disconnect" onclick="client.close();" />
+      </div>
+
+    </form>
+  </body>
 </html>
+  
