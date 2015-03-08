@@ -1,4 +1,4 @@
-var url = "ws://ec2-52-11-84-185.us-west-2.compute.amazonaws.com:8000/ws";
+var url = "ws://ec2-52-11-117-67.us-west-2.compute.amazonaws.com:8000/ws";
 var client = {
     ws: null,
     send: function () {
