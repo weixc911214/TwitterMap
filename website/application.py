@@ -234,7 +234,7 @@ if __name__ == "__main__":
     # http_server = WSGIServer(("localhost",8000), application, handler_class=WebSocketHandler)
     # print('Server started at %s:%s'%("localhost",8000))
     # http_server.serve_forever()
-    socketio.run(application)
+    socketio.run(application, host="52.11.117.67", port=5000)
 
 
 
