@@ -7,10 +7,6 @@
     $(function() {
     if ("WebSocket" in window) {
         ws = new WebSocket("ws://" + document.domain + ":{{port}}/websocket");
-        //ws = new WebSocket("ws://ec2-52-11-84-185.us-west-2.compute.amazonaws.com:8080/websocket");
-        ws.onerror = function(msg) {
-            onError(msg);
-        };
         ws.onmessage = function (msg) {
             var message = JSON.parse(msg.data);
             $("p#log").html(message.output );

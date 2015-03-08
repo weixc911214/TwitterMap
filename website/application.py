@@ -8,12 +8,15 @@ from flask import Flask, render_template,request
 import time
 import tweepy
 from flask_socketio import SocketIO, emit
+from werkzeug.contrib.fixers import ProxyFix
 
 
-application = Flask(__name__,  static_url_path='/static')
+application = Flask(__name__)
 application.config["DEBUG"] = True
 application.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(application)
+
+application.wsgi_app = ProxyFix(application.wsgi_app)
 
 session = dict()
 stream = object
@@ -136,7 +139,7 @@ def test_message(message):
     stream.filter(track=[keyword])
     #print "success"
 
-
+import json
 @application.route("/heatmap.html", methods=["GET", "POST"])
 def heatmap():
     if request.method == "POST":
@@ -148,7 +151,7 @@ def heatmap():
     # tweets = Table('TwitterMap', metadata, autoload = True)
     # result = tweets.select(tweets.c.text.like("%Columbia%")).execute().fetchall()
     result = []
-    return render_template("foundation.html", data = result)
+    return render_template("heatmap.html", data = result)
 
 
 
@@ -156,8 +159,35 @@ def heatmap():
 def foundation():
     return render_template("foundation.html")
 
+
+# def wsgi_app(environ, start_response):
+#     path = environ["PATH_INFO"]
+#     if path == "/":
+#         return application(environ, start_response)
+#     elif path == "/websocket":
+#         handle_websocket(environ["wsgi.websocket"])
+#     else:
+#         return application(environ, start_response)
+# def handle_websocket(ws):
+#     while True:
+#         message = ws.receive()
+#         if message is None:
+#             break
+#         message = json.loads(message)
+#         ws.send(json.dumps({'output': message['output']}))
+
+# @application.route('/sockets')
+# def sockets():
+#     return render_template("socket.html", port = 8000)
+
+
 if __name__ == "__main__":
-    socketio.run(application, port=5000, policy_server=False)
+    # from gevent.pywsgi import WSGIServer
+    # from geventwebsocket.handler import WebSocketHandler
+    # http_server = WSGIServer(("localhost",8000), application, handler_class=WebSocketHandler)
+    # print('Server started at %s:%s'%("localhost",8000))
+    # http_server.serve_forever()
+    socketio.run(application, port=5000)
 
 
 
