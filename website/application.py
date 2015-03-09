@@ -206,35 +206,11 @@ def foundation():
     return render_template("foundation.html")
 
 
-# def wsgi_app(environ, start_response):
-#     path = environ["PATH_INFO"]
-#     if path == "/":
-#         return application(environ, start_response)
-#     elif path == "/websocket":
-#         handle_websocket(environ["wsgi.websocket"])
-#     else:
-#         return application(environ, start_response)
-# def handle_websocket(ws):
-#     while True:
-#         message = ws.receive()
-#         if message is None:
-#             break
-#         message = json.loads(message)
-#         ws.send(json.dumps({'output': message['output']}))
-
-
 
 
 if __name__ == "__main__":
 
-    # pywsgi.WSGIServer(('', 8000), application, handler_class=WebSocketHandler) \
-    #       .serve_forever()
-    # from gevent.pywsgi import WSGIServer
-    # from geventwebsocket.handler import WebSocketHandler
-    # http_server = WSGIServer(("localhost",8000), application, handler_class=WebSocketHandler)
-    # print('Server started at %s:%s'%("localhost",8000))
-    # http_server.serve_forever()
-    socketio.run(application, host="52.11.117.67", port=5000)
+    socketio.run(application)
 
 
 
