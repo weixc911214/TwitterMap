@@ -2,9 +2,10 @@
 __author__ = 'wei'
 import gevent.monkey
 gevent.monkey.patch_all()
-import MySQLdb as sql
+import pymysql as sql
 from flask import Flask, render_template,request
-# from sqlalchemy import create_engine, MetaData, Table
+from sqlalchemy import create_engine, MetaData, Table
+
 import time
 import tweepy
 from flask_socketio import SocketIO, emit
@@ -118,10 +119,10 @@ class Stream_Listener(tweepy.StreamListener):
         date = status.created_at
         try:
 
-            db = sql.connect(host='twittermap.comtnuycjpkv.us-west-2.rds.amazonaws.com', user='xw2353', passwd='wxc16888', db='innodb', cursorclass=sql.cursors.DictCursor)
+            db = sql.connect(host='cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com', user='weixc1234', passwd='wxc16888', db='cloud', cursorclass=sql.cursors.DictCursor)
             cursor = db.cursor()
             #print geo
-            test_sql ="""INSERT INTO innodb.TwitterMap(id, text, geo, author_name, author_id, author_url, date) VALUES(\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\")""" % (str(tweet_id), text, location, author_name, str(author_id), author_url, date)
+            test_sql ="""INSERT INTO cloud.TwitterMap(id, text, geo, author_name, author_id, author_url, date) VALUES(\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\")""" % (str(tweet_id), text, location, author_name, str(author_id), author_url, date)
             #print test_sql
             cursor.execute(test_sql)
             db.commit()
@@ -129,7 +130,7 @@ class Stream_Listener(tweepy.StreamListener):
             print "success"
             #print test_sql
         except:
-            pass
+            print str(tweet_id), text, location, author_name, str(author_id), author_url, date
 
     def ack(self):
         print 'message was received!'
@@ -155,12 +156,16 @@ def message():
         global keyword
         keyword = request.form["keyword"]
         print keyword
-    # engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/innodb', convert_unicode=True)
-    # metadata = MetaData(bind=engine)
-    # tweets = Table('TwitterMap', metadata, autoload = True)
-    # result = tweets.select(tweets.c.text.like("%Columbia%")).execute().fetchall()
-    result = []
+    engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/cloud', convert_unicode=True)
+    metadata = MetaData(bind=engine)
+    tweets = Table('TwitterMap', metadata, autoload = True)
+    query = "%" + keyword + "%"
+    #print query
+    result = tweets.select(tweets.c.text.like(query)).execute().fetchall()
+    #print result
+    #result = []
 
+    #print result
 
     return render_template("message.html", data = result)
 
@@ -186,11 +191,15 @@ def heatmap():
         global keyword
         keyword = request.form["keyword"]
         print keyword
-    # engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/innodb', convert_unicode=True)
-    # metadata = MetaData(bind=engine)
-    # tweets = Table('TwitterMap', metadata, autoload = True)
-    # result = tweets.select(tweets.c.text.like("%Columbia%")).execute().fetchall()
-    result = []
+    engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/cloud', convert_unicode=True)
+    metadata = MetaData(bind=engine)
+    tweets = Table('TwitterMap', metadata, autoload = True)
+    query = "%" + keyword + "%"
+    #print query
+    result = tweets.select(tweets.c.text.like(query)).execute().fetchall()
+
+    #print result
+
     return render_template("heatmap.html", data = result)
 
 

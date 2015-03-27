@@ -68,6 +68,7 @@
 
 
     {% for result in data %}
+      // $('#log').append(result);
       var contentString_{{ result.id }} = "{{ result.text }}";
       var infowindow_{{ result.id }} = new google.maps.InfoWindow({
           content: contentString_{{ result.id }}
