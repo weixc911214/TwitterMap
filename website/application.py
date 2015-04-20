@@ -87,6 +87,7 @@ class Stream_Listener(tweepy.StreamListener):
 
     def on_status(self, status):
 
+        print "onstatus"
         if status.geo is None:
             return
         data = {}
@@ -102,7 +103,7 @@ class Stream_Listener(tweepy.StreamListener):
         global socketio
 
         emit('my event', {'data': data})
-        #print data
+        print data
 
         try:
             text = status.text.encode("utf8")
@@ -117,27 +118,27 @@ class Stream_Listener(tweepy.StreamListener):
         author_id = status.author.id
         author_url = status.author.profile_image_url_https
         date = status.created_at
-        try:
-
-            db = sql.connect(host='cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com', user='weixc1234', passwd='wxc16888', db='cloud', cursorclass=sql.cursors.DictCursor)
-            cursor = db.cursor()
-            #print geo
-            test_sql ="""INSERT INTO cloud.TwitterMap(id, text, geo, author_name, author_id, author_url, date) VALUES(\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\")""" % (str(tweet_id), text, location, author_name, str(author_id), author_url, date)
-            #print test_sql
-            cursor.execute(test_sql)
-            db.commit()
-            db.close()
-            print "success"
-            #print test_sql
-        except:
-            print str(tweet_id), text, location, author_name, str(author_id), author_url, date
+        # try:
+        #
+        #     db = sql.connect(host='cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com', user='weixc1234', passwd='wxc16888', db='cloud', cursorclass=sql.cursors.DictCursor)
+        #     cursor = db.cursor()
+        #     test_sql =""" INSERT INTO cloud.TwitterMap(id, text, geo, author_name, author_id, author_url, date) VALUES(\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\")""" \
+        #               % (str(tweet_id), text, location, author_name, str(author_id), author_url, date)
+        #
+        #     cursor.execute(test_sql)
+        #     db.commit()
+        #     db.close()
+        #     print "success"
+        #
+        # except:
+        #     print str(tweet_id), text, location, author_name, str(author_id), author_url, date
 
     def ack(self):
         print 'message was received!'
 
     def on_error(self, status_code):
         if status_code == 420:
-            #returning False in on_data disconnects the stream
+            # returning False in on_data disconnects the stream
             return False
 
 
@@ -150,22 +151,22 @@ def index():
 
 
 
-@application.route('/message.html',methods=["GET", "POST"])
+@application.route('/message.html', methods=["GET", "POST"])
 def message():
     if request.method == "POST":
         global keyword
         keyword = request.form["keyword"]
         print keyword
-    engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/cloud', convert_unicode=True)
-    metadata = MetaData(bind=engine)
-    tweets = Table('TwitterMap', metadata, autoload = True)
-    query = "%" + keyword + "%"
+    # engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/cloud', convert_unicode=True)
+    # metadata = MetaData(bind=engine)
+    # tweets = Table('TwitterMap', metadata, autoload = True)
+    # query = "%" + keyword + "%"
     #print query
-    result = tweets.select(tweets.c.text.like(query)).execute().fetchall()
+    #result = tweets.select(tweets.c.text.like(query)).execute().fetchall()
     #print result
-    #result = []
+    result = []
 
-    #print result
+    print result
 
     return render_template("message.html", data = result)
 
@@ -191,13 +192,13 @@ def heatmap():
         global keyword
         keyword = request.form["keyword"]
         print keyword
-    engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/cloud', convert_unicode=True)
-    metadata = MetaData(bind=engine)
-    tweets = Table('TwitterMap', metadata, autoload = True)
-    query = "%" + keyword + "%"
-    #print query
-    result = tweets.select(tweets.c.text.like(query)).execute().fetchall()
-
+    # engine = create_engine('mysql://weixc1234:wxc16888@cloud.comtnuycjpkv.us-west-2.rds.amazonaws.com/cloud', convert_unicode=True)
+    # metadata = MetaData(bind=engine)
+    # tweets = Table('TwitterMap', metadata, autoload = True)
+    # query = "%" + keyword + "%"
+    # #print query
+    # result = tweets.select(tweets.c.text.like(query)).execute().fetchall()
+    result = []
     #print result
 
     return render_template("heatmap.html", data = result)

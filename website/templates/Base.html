@@ -108,12 +108,8 @@
         namespace = '/test'; // change to an empty string to use the global namespace
             // the socket.io documentation recommends sending an explicit package upon connection
             // this is specially important when using the global namespace
-          var aws = 'http://twitter-ymaptgsfrr.elasticbeanstalk.com:5000' + namespace;
+            //var aws = 'http://twitter-ymaptgsfrr.elasticbeanstalk.com:5000' + namespace;
             var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
-            //var socket = io.connect('http://ec2-52-11-117-67.us-west-2.compute.amazonaws.com:5000' + namespace);
-            //var socket = io.connect('http://elasticbeanstalk-us-west-2-493015455903.s3-website-us-west-2.amazonaws.com:5000' + namespace);
-            //var socket = io.connect('http://52.11.84.185:80' + namespace);
-            //var socket = io.connect(aws)
             socket.on('connect', function() {
                 socket.emit('my event', {data: 'I\'m connected!'});
             });
